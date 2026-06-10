@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-teal: #569AD0;
+  --color-brand-navy: #1D2D49;
+  --color-brand-gold: #E6A726;
+  --color-brand-white: #FFFFFF;
+  --color-brand-gray: #F5F5F5;
+
+  --font-sans: 'Inter', 'Univers LT Pro', system-ui, sans-serif;
+  --font-serif: 'Aleo', Georgia, serif;
+  --font-urduHeading: 'Noto Nastaliq Urdu', serif;
+  --font-urduBody: 'Noto Naskh Arabic', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-margin-top: 5rem;
+  }
+  body {
+    @apply bg-brand-gray text-brand-navy font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .brush-border {
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 500 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,25 Q125,0 250,25 T500,25 L500,50 L0,50 Z' fill='black'/%3E%3C/svg%3E");
+    mask-size: 100% 100%;
+  }
+
+  /* Framer-motion compatible reduced-motion handling */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
