@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { MapPin, Mail, Phone, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { sendContactEmail } from '../lib/sendContactEmail';
 
 interface ContactProps {
   isUrdu: boolean;
@@ -16,17 +17,36 @@ const Contact: React.FC<ContactProps> = ({ isUrdu }) => {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Backend dev to integrate contact form API endpoint here
-    console.log('Contact form data:', formData);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const composedMessage = [
+      formData.subject ? `Subject: ${formData.subject}` : '',
+      formData.phone ? `Phone: ${formData.phone}` : '',
+      formData.message,
+    ].filter(Boolean).join('\n\n');
+
+    try {
+      const ok = await sendContactEmail(formData.name, formData.email, composedMessage);
+      if (!ok) {
+        throw new Error('Failed to send message');
+      }
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch {
+      setSubmitError(isUrdu ? 'پیغام بھیجنے میں ناکامی۔ دوبارہ کوشش کریں۔' : 'Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -232,12 +252,19 @@ const Contact: React.FC<ContactProps> = ({ isUrdu }) => {
                     />
                   </div>
 
+                  {submitError && (
+                    <p className="text-red-600 text-sm">{submitError}</p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full bg-brand-gold text-brand-navy font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg shadow-brand-gold/20"
+                    disabled={isSubmitting}
+                    className="w-full bg-brand-gold text-brand-navy font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg shadow-brand-gold/20 disabled:opacity-50"
                   >
                     <Send className="w-4 h-4" />
-                    {isUrdu ? 'پیغام بھیجیں' : 'Send Message'}
+                    {isSubmitting
+                      ? (isUrdu ? 'بھیجا جا رہا ہے...' : 'Sending...')
+                      : (isUrdu ? 'پیغام بھیجیں' : 'Send Message')}
                   </button>
                 </form>
               )}

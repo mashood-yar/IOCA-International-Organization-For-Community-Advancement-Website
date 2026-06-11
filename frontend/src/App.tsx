@@ -16,6 +16,8 @@ const Volunteer = lazy(() => import('./pages/Volunteer'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const AdminLogin = lazy(() => import('./admin/AdminLogin'));
+const AdminDashboard = lazy(() => import('./admin/AdminDashboard'));
 
 /** Scrolls to top on route change */
 function ScrollToTop() {
@@ -62,6 +64,8 @@ const PageLoader = () => (
 );
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
   const [isUrdu, setIsUrdu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null);
@@ -74,6 +78,20 @@ function App() {
     setSelectedCampaign(campaignName);
     setIsModalOpen(true);
   };
+
+  if (isAdminRoute) {
+    return (
+      <>
+        <ScrollToTop />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        </Suspense>
+      </>
+    );
+  }
 
   return (
     <div className={`min-h-screen bg-brand-gray text-brand-navy font-sans selection:bg-brand-gold selection:text-white pb-[72px] md:pb-0 ${isUrdu ? 'font-urduBody' : ''}`} dir={isUrdu ? 'rtl' : 'ltr'}>
