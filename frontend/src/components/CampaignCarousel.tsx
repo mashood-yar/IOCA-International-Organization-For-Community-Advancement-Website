@@ -69,14 +69,14 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
           role="region"
           aria-roledescription="carousel"
           aria-label={isUrdu ? 'مہمات' : 'Campaign appeals'}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4"
+          className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar py-4 px-1 -mx-1"
         >
           {campaigns.map((campaign, idx) => {
             const progressPercent = Math.round((campaign.raised / campaign.goal) * 100);
             return (
               <motion.div
                 key={campaign.id}
-                className={`group min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col ${campaign.isUrgent ? 'ring-2 ring-brand-gold' : ''}`}
+                className={`group min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col border-2 ${campaign.isUrgent ? 'border-brand-gold' : 'border-transparent'}`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
