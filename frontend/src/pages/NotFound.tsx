@@ -9,7 +9,7 @@ interface NotFoundProps {
 const NotFound: React.FC<NotFoundProps> = ({ isUrdu }) => (
   <>
     <Helmet>
-      <title>404 — Page Not Found | IOCA</title>
+      <title>404 - Page Not Found | IOCA</title>
     </Helmet>
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-24">
       <img

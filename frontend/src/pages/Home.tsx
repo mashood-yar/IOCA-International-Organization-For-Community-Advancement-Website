@@ -15,7 +15,7 @@ const Home: React.FC<HomeProps> = ({ isUrdu, onDonateClick }) => {
   return (
     <>
       <Helmet>
-        <title>IOCA — International Organization For Community Advancement</title>
+        <title>IOCA - International Organization For Community Advancement</title>
         <meta name="description" content="Empowering communities across Pakistan through education, healthcare, youth development, and emergency relief. 100% of donations reach those in need." />
       </Helmet>
       <Hero isUrdu={isUrdu} />

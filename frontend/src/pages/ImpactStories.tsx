@@ -21,7 +21,7 @@ const ImpactStories: React.FC<ImpactStoriesProps> = ({ isUrdu }) => {
     <>
       <Helmet>
         <title>{isUrdu ? 'کہانیاں | IOCA' : 'Impact Stories | IOCA'}</title>
-        <meta name="description" content="Read inspiring stories of transformation — real people, real communities, real impact through IOCA's programs." />
+        <meta name="description" content="Read inspiring stories of transformation - real people, real communities, real impact through IOCA's programs." />
       </Helmet>
 
       <div className="py-16 md:py-24">
@@ -38,8 +38,8 @@ const ImpactStories: React.FC<ImpactStoriesProps> = ({ isUrdu }) => {
             </h1>
             <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
-                ? 'حقیقی لوگ، حقیقی کمیونٹیز، حقیقی تبدیلی — یہ کہانیاں IOCA کے اثرات کی گواہی دیتی ہیں۔'
-                : 'Real people, real communities, real impact — these stories bear witness to the transformative power of IOCA\'s work.'}
+                ? 'حقیقی لوگ، حقیقی کمیونٹیز، حقیقی تبدیلی - یہ کہانیاں IOCA کے اثرات کی گواہی دیتی ہیں۔'
+                : 'Real people, real communities, real impact - these stories bear witness to the transformative power of IOCA\'s work.'}
             </p>
           </motion.div>
 

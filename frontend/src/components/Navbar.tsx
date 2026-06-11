@@ -270,7 +270,7 @@ const Navbar: React.FC<NavbarProps> = ({ isUrdu, setIsUrdu, onDonateClick }) => 
                   {isUrdu ? 'رضاکار بنیں' : 'Volunteer'}
                 </Link>
 
-                {/* Mobile Donate — calls onDonateClick instead of navigating */}
+                {/* Mobile Donate - calls onDonateClick instead of navigating */}
                 <button
                   onClick={() => {
                     closeMenu();

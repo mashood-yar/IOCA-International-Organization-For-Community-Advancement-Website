@@ -1,5 +1,5 @@
 // ============================================================
-// IOCA — Centralized Type Definitions
+// IOCA - Centralized Type Definitions
 // ============================================================
 
 export interface Program {

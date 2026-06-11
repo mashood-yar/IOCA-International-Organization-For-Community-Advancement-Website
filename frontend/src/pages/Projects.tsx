@@ -28,7 +28,7 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
     <>
       <Helmet>
         <title>{isUrdu ? 'پروجیکٹس | IOCA' : 'Projects | IOCA'}</title>
-        <meta name="description" content="Discover IOCA's ongoing and completed projects across Pakistan — from clean water initiatives to flood relief and school reconstruction." />
+        <meta name="description" content="Discover IOCA's ongoing and completed projects across Pakistan - from clean water initiatives to flood relief and school reconstruction." />
       </Helmet>
 
       <div className="py-16 md:py-24">

@@ -83,8 +83,8 @@ const Contact: React.FC<ContactProps> = ({ isUrdu }) => {
             </h1>
             <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
-                ? 'ہم آپ سے سننا چاہتے ہیں۔ کوئی سوال ہو، شراکت کا ارادہ ہو یا رضاکارانہ خدمات — ہم سے رابطہ کریں۔'
-                : 'We\'d love to hear from you. Whether you have questions, want to partner with us, or are interested in volunteering — reach out.'}
+                ? 'ہم آپ سے سننا چاہتے ہیں۔ کوئی سوال ہو، شراکت کا ارادہ ہو یا رضاکارانہ خدمات - ہم سے رابطہ کریں۔'
+                : 'We\'d love to hear from you. Whether you have questions, want to partner with us, or are interested in volunteering - reach out.'}
             </p>
           </motion.div>
 

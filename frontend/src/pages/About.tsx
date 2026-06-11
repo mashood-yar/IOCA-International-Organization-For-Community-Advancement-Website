@@ -45,8 +45,8 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
       icon: <Lightbulb className="w-8 h-8 text-brand-teal" />,
       titleEn: 'Innovation',
       titleUr: 'جدت',
-      descEn: 'We embrace creative solutions — from solar-powered clinics to digital literacy bootcamps.',
-      descUr: 'ہم تخلیقی حل اپناتے ہیں — شمسی توانائی والے کلینکس سے لے کر ڈیجیٹل خواندگی بوٹ کیمپس تک۔',
+      descEn: 'We embrace creative solutions - from solar-powered clinics to digital literacy bootcamps.',
+      descUr: 'ہم تخلیقی حل اپناتے ہیں - شمسی توانائی والے کلینکس سے لے کر ڈیجیٹل خواندگی بوٹ کیمپس تک۔',
     },
     {
       icon: <UsersRound className="w-8 h-8 text-brand-teal" />,
@@ -178,7 +178,7 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
           </div>
         </section>
 
-        {/* Our Team — wired to mockData */}
+        {/* Our Team - wired to mockData */}
         <section ref={teamRef} className="max-w-7xl mx-auto px-4 md:px-16 py-12">
           <div className="text-center mb-16">
             <Users className="w-12 h-12 text-brand-teal mx-auto mb-4" />
