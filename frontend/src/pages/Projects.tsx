@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Calendar, CheckCircle2, Clock } from 'lucide-react';
-import { projects } from '../data/mockData';
+import { supabase } from '../lib/supabase';
+import type { Project } from '../data/types';
 import { toUrduNumerals } from '../utils/formatters';
 
 interface ProjectsProps {
@@ -11,8 +12,52 @@ interface ProjectsProps {
 
 const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'ongoing' | 'completed'>('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState('');
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoading(true);
+      setFetchError('');
+
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        setFetchError(isUrdu ? 'پروجیکٹس لوڈ کرنے میں ناکامی۔' : 'Failed to load projects.');
+      } else {
+        setProjects(
+          (data ?? []).map((row) => {
+            const status = row.status === 'completed' ? 'completed' : 'ongoing';
+            return {
+              id: row.id,
+              titleEn: row.title,
+              titleUr: row.title,
+              descEn: row.description,
+              descUr: row.description,
+              locationEn: '',
+              locationUr: '',
+              status,
+              statusEn: status === 'completed' ? 'Completed' : 'Ongoing',
+              statusUr: status === 'completed' ? 'مکمل' : 'جاری',
+              date: new Date(row.created_at).toLocaleDateString(),
+              image: row.image_url ?? '/assets/hero-community.webp',
+              progress: status === 'completed' ? 100 : 50,
+            };
+          })
+        );
+      }
+
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, [isUrdu]);
 
   const filters = [
     { key: 'all' as const, labelEn: 'All Projects', labelUr: 'تمام پروجیکٹس' },
@@ -68,6 +113,11 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
           </div>
 
           {/* Projects Grid */}
+          {loading ? (
+            <p className="text-brand-navy/60 text-center py-16">{isUrdu ? 'لوڈ ہو رہا ہے...' : 'Loading...'}</p>
+          ) : fetchError ? (
+            <p className="text-red-600 text-center py-16">{fetchError}</p>
+          ) : (
           <div ref={ref} className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filtered.map((project, idx) => (
               <motion.div
@@ -145,8 +195,9 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
               </motion.div>
             ))}
           </div>
+          )}
 
-          {filtered.length === 0 && (
+          {!loading && !fetchError && filtered.length === 0 && (
             <div className="text-center py-16 text-brand-navy/40">
               <p className="text-lg">{isUrdu ? 'کوئی پروجیکٹ نہیں ملا۔' : 'No projects found.'}</p>
             </div>

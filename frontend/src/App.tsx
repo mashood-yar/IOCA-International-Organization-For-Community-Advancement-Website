@@ -15,6 +15,8 @@ const DonatePage = lazy(() => import('./pages/DonatePage'));
 const Volunteer = lazy(() => import('./pages/Volunteer'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
+const News = lazy(() => import('./pages/News'));
+const Events = lazy(() => import('./pages/Events'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const AdminLogin = lazy(() => import('./admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard'));
@@ -111,6 +113,8 @@ function App() {
               <Route path="/donate" element={<DonatePage isUrdu={isUrdu} onDonateClick={() => handleDonateClick(null)} />} />
               <Route path="/volunteer" element={<Volunteer isUrdu={isUrdu} />} />
               <Route path="/gallery" element={<Gallery isUrdu={isUrdu} />} />
+              <Route path="/news" element={<News isUrdu={isUrdu} />} />
+              <Route path="/events" element={<Events isUrdu={isUrdu} />} />
               <Route path="/contact" element={<Contact isUrdu={isUrdu} />} />
               <Route path="*" element={<NotFound isUrdu={isUrdu} />} />
             </Routes>

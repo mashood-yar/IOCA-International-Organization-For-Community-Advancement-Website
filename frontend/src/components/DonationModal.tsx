@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ArrowRight, ArrowLeft, CheckCircle2, CreditCard, Building2, Smartphone } from 'lucide-react';
 import { toUrduNumerals } from '../utils/formatters';
+import { saveDonation } from '../lib/saveDonation';
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -100,7 +101,14 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
 
   if (!isOpen) return null;
 
-  const handleNext = () => setStep(s => (s < 4 ? s + 1 : s) as any);
+  const handleNext = async () => {
+    if (step === 3) {
+      const finalAmount = amount || parseInt(customAmount) || 0;
+      const message = `${campaign} • ${fundType} • ${frequency}`;
+      await saveDonation(isAnon ? 'Anonymous' : donorName, finalAmount, message);
+    }
+    setStep(s => (s < 4 ? s + 1 : s) as 1 | 2 | 3 | 4);
+  };
   const handleBack = () => setStep(s => (s > 1 ? s - 1 : s) as any);
 
   const displayNum = (num: number | string) => isUrdu ? toUrduNumerals(num) : num.toString();

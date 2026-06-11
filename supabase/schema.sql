@@ -70,6 +70,9 @@ create policy "Public read projects" on projects for select using (true);
 -- Allow contact form submissions via serverless function
 create policy "Allow contact form submissions" on contacts for insert with check (true);
 
+-- Allow donation submissions from public site
+create policy "Allow donation submissions" on donations for insert with check (true);
+
 -- Only admins can insert/update/delete everything
 create policy "Admin full access contacts" on contacts using (
   exists (select 1 from profiles where id = auth.uid() and role = 'admin')
