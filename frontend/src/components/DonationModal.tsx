@@ -16,7 +16,28 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
   const [frequency, setFrequency] = useState<'one-time' | 'monthly'>('one-time');
   const [fundType, setFundType] = useState<'zakat' | 'sadaqah' | 'general'>('general');
   const [campaign, setCampaign] = useState<string>(initialCampaign || 'General Fund');
+  const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [donorPhone, setDonorPhone] = useState('');
+  const [isAnon, setIsAnon] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // Reset state when opened
+  useEffect(() => {
+    if (isOpen) {
+      setStep(1);
+      setAmount(5000);
+      setCustomAmount('');
+      setFrequency('one-time');
+      setFundType('general');
+      setDonorName('');
+      setDonorEmail('');
+      setDonorPhone('');
+      setIsAnon(false);
+      setPaymentMethod(null);
+    }
+  }, [isOpen]);
 
   const presetAmounts = [1000, 2000, 5000, 10000];
 
@@ -169,7 +190,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                     <label htmlFor="custom-amount" className="sr-only">
                       {isUrdu ? 'اپنی رقم درج کریں' : 'Custom Amount'}
                     </label>
-                    <span className="absolute top-1/2 -translate-y-1/2 left-4 text-brand-navy/50 font-bold" aria-hidden="true">Rs</span>
+                    <span className="absolute top-1/2 -translate-y-1/2 start-4 text-brand-navy/50 font-bold" aria-hidden="true">Rs</span>
                     <input 
                       id="custom-amount"
                       type="number" 
@@ -180,7 +201,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                         setCustomAmount(e.target.value);
                         setAmount(null);
                       }}
-                      className="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-brand-navy/10 font-bold text-brand-navy focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50 transition-colors"
+                      className="w-full ps-12 pe-4 py-3.5 rounded-xl border-2 border-brand-navy/10 font-bold text-brand-navy focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50 transition-colors"
                     />
                   </div>
                 </div>
@@ -238,21 +259,21 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
 
               <div>
                 <label htmlFor="donor-name" className="block text-sm font-semibold text-brand-navy/80 mb-2">{isUrdu ? 'پورا نام' : 'Full Name'} *</label>
-                <input id="donor-name" type="text" required className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
+                <input id="donor-name" type="text" value={donorName} onChange={e => setDonorName(e.target.value)} required className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
               </div>
               
               <div>
                 <label htmlFor="donor-email" className="block text-sm font-semibold text-brand-navy/80 mb-2">{isUrdu ? 'ای میل ایڈریس' : 'Email Address'} *</label>
-                <input id="donor-email" type="email" required className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
+                <input id="donor-email" type="email" value={donorEmail} onChange={e => setDonorEmail(e.target.value)} required className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
               </div>
 
               <div>
                 <label htmlFor="donor-phone" className="block text-sm font-semibold text-brand-navy/80 mb-2">{isUrdu ? 'فون نمبر (اختیاری)' : 'Phone Number (Optional)'}</label>
-                <input id="donor-phone" type="tel" className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
+                <input id="donor-phone" type="tel" value={donorPhone} onChange={e => setDonorPhone(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:outline-none focus:ring-2 focus:ring-brand-gold/50" />
               </div>
 
               <div className="flex items-center gap-3 pt-4">
-                <input type="checkbox" id="anon" className="w-5 h-5 accent-brand-gold rounded focus:ring-brand-gold focus:ring-offset-2" />
+                <input type="checkbox" id="anon" checked={isAnon} onChange={e => setIsAnon(e.target.checked)} className="w-5 h-5 accent-brand-gold rounded focus:ring-brand-gold focus:ring-offset-2" />
                 <label htmlFor="anon" className="text-sm text-brand-navy/80 font-medium cursor-pointer">
                   {isUrdu ? 'میرا عطیہ گمنام رکھیں' : 'Make my donation anonymous'}
                 </label>
@@ -268,7 +289,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
               </label>
               
               <div className="space-y-3" role="group" aria-labelledby="payment-label">
-                <button className="w-full flex items-center justify-between p-4 border-2 border-brand-navy/10 rounded-xl hover:border-brand-gold hover:bg-brand-gold/5 transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold">
+                <button onClick={() => setPaymentMethod('card')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'card' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-brand-navy/5 rounded-full flex items-center justify-center text-brand-navy" aria-hidden="true">
                       <CreditCard className="w-5 h-5" />
@@ -277,7 +298,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                   </div>
                 </button>
 
-                <button className="w-full flex items-center justify-between p-4 border-2 border-brand-navy/10 rounded-xl hover:border-brand-gold hover:bg-brand-gold/5 transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold">
+                <button onClick={() => setPaymentMethod('easypaisa')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'easypaisa' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#3eb149]/10 rounded-full flex items-center justify-center text-[#3eb149]" aria-hidden="true">
                       <Smartphone className="w-5 h-5" />
@@ -286,7 +307,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                   </div>
                 </button>
 
-                <button className="w-full flex items-center justify-between p-4 border-2 border-brand-navy/10 rounded-xl hover:border-brand-gold hover:bg-brand-gold/5 transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold">
+                <button onClick={() => setPaymentMethod('jazzcash')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'jazzcash' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#f7931e]/10 rounded-full flex items-center justify-center text-[#f7931e]" aria-hidden="true">
                       <Smartphone className="w-5 h-5" />
@@ -295,7 +316,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                   </div>
                 </button>
                 
-                <button className="w-full flex items-center justify-between p-4 border-2 border-brand-navy/10 rounded-xl hover:border-brand-gold hover:bg-brand-gold/5 transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold">
+                <button onClick={() => setPaymentMethod('bank')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'bank' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-brand-navy/5 rounded-full flex items-center justify-center text-brand-navy" aria-hidden="true">
                       <Building2 className="w-5 h-5" />
@@ -316,7 +337,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
               <h3 className={`text-3xl font-black text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
                 {isUrdu ? 'جزاک اللہ!' : 'Jazakallah Khair!'}
               </h3>
-              <p className="text-brand-navy/70 max-w-sm mx-auto leading-relaxed">
+              <p className={`text-brand-navy/70 max-w-sm mx-auto leading-relaxed ${isUrdu ? 'font-urduBody' : ''}`}>
                 {isUrdu 
                   ? 'آپ کا عطیہ کامیابی کے ساتھ وصول کر لیا گیا ہے۔ آپ کا تعاون معاشرے میں حقیقی تبدیلی لا رہا ہے۔' 
                   : 'Your generous donation has been securely processed. An electronic receipt has been sent to your email.'}
@@ -340,7 +361,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
             )}
             <button 
               onClick={handleNext}
-              disabled={step === 1 && !amount && !customAmount}
+              disabled={(step === 1 && !amount && !customAmount) || (step === 2 && (!donorName || !donorEmail)) || (step === 3 && !paymentMethod)}
               className="flex-1 bg-brand-gold text-brand-navy py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-gold/20 focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
             >
               {step === 3 ? (isUrdu ? 'ادائیگی مکمل کریں' : 'Complete Donation') : (isUrdu ? 'آگے بڑھیں' : 'Continue')}

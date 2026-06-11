@@ -36,7 +36,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
             <h2 className={`text-3xl md:text-5xl font-extrabold text-brand-navy mb-3 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'فعال مہمات' : 'Active Appeals'}
             </h2>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-lg">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-lg ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu ? 'آپ کا عطیہ براہ راست ان پروگراموں کی مدد کرتا ہے جو زندگیاں بدلتے ہیں۔' : 'Your donation directly supports programs that are changing lives across Pakistan.'}
             </p>
           </div>
@@ -76,7 +76,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
             return (
               <motion.div
                 key={campaign.id}
-                className={`min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col ${campaign.isUrgent ? 'ring-2 ring-brand-gold' : ''}`}
+                className={`group min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col ${campaign.isUrgent ? 'ring-2 ring-brand-gold' : ''}`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}

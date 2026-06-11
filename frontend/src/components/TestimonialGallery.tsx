@@ -23,7 +23,7 @@ const TestimonialGallery: React.FC<TestimonialGalleryProps> = ({ isUrdu }) => {
           <h2 className={`text-3xl md:text-5xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
             {isUrdu ? 'کمیونٹی کی آوازیں' : 'Voices from Our Community'}
           </h2>
-          <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+          <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
             {isUrdu ? 'ان لوگوں سے سنیں جن کی زندگیاں بدل گئیں۔' : 'Hear directly from the people whose lives have been transformed.'}
           </p>
         </motion.div>

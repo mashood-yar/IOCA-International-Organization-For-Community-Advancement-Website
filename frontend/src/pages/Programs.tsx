@@ -31,7 +31,7 @@ const Programs: React.FC<ProgramsProps> = ({ isUrdu }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'ہمارے پروگرامز' : 'Our Programs'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'ہم تعلیم، صحت، نوجوانوں کی ترقی اور کمیونٹی ہم آہنگی کے ذریعے پاکستان بھر میں کمیونٹیز کو بااختیار بنا رہے ہیں۔'
                 : 'We empower communities across Pakistan through education, healthcare, youth development, and community bonding programs.'}

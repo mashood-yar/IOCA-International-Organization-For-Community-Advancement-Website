@@ -21,7 +21,7 @@ const NotFound: React.FC<NotFoundProps> = ({ isUrdu }) => (
       <h2 className={`text-2xl md:text-3xl font-bold text-brand-navy mb-3 ${isUrdu ? 'font-urduHeading' : ''}`}>
         {isUrdu ? 'صفحہ نہیں ملا' : 'Page Not Found'}
       </h2>
-      <p className="text-brand-navy/60 mb-8 max-w-md text-lg">
+      <p className={`text-brand-navy/60 mb-8 max-w-md text-lg ${isUrdu ? 'font-urduBody' : ''}`}>
         {isUrdu
           ? 'معذرت، آپ جو صفحہ تلاش کر رہے ہیں وہ موجود نہیں ہے یا منتقل ہو چکا ہے۔'
           : 'Sorry, the page you are looking for does not exist or has been moved.'}

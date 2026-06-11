@@ -58,24 +58,37 @@ const Volunteer: React.FC<VolunteerProps> = ({ isUrdu }) => {
     { icon: Clock, titleEn: 'Flexible Hours', titleUr: 'لچکدار اوقات', descEn: 'Volunteer on your own schedule.', descUr: 'اپنے شیڈول کے مطابق رضاکارانہ خدمات۔' },
   ];
 
-  const InputField = ({ id, name, label, type = 'text', required = false, placeholder }: { id: string; name: string; label: string; type?: string; required?: boolean; placeholder: string; }) => (
-    <div>
-      <label htmlFor={id} className={`block text-sm font-medium text-brand-navy mb-1.5 ${isUrdu ? 'font-urduBody' : ''}`}>
-        {label} {required && '*'}
-      </label>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        required={required}
-        value={(formData as any)[name]}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className={`w-full px-4 py-3 rounded-xl border ${errors[name] ? 'border-red-400 bg-red-50' : 'border-brand-navy/10 bg-brand-gray'} focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal/20 transition-all text-sm`}
-      />
-      {errors[name] && <p className="text-red-500 text-xs mt-1">{errors[name]}</p>}
-    </div>
-  );
+interface InputFieldProps {
+  id: string;
+  name: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  placeholder: string;
+  value: string;
+  error?: string;
+  isUrdu: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+}
+
+const InputField: React.FC<InputFieldProps> = ({ id, name, label, type = 'text', required = false, placeholder, value, error, isUrdu, onChange }) => (
+  <div>
+    <label htmlFor={id} className={`block text-sm font-medium text-brand-navy mb-1.5 ${isUrdu ? 'font-urduBody' : ''}`}>
+      {label} {required && '*'}
+    </label>
+    <input
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`w-full px-4 py-3 rounded-xl border ${error ? 'border-red-400 bg-red-50' : 'border-brand-navy/10 bg-brand-gray'} focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal/20 transition-all text-sm`}
+    />
+    {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+  </div>
+);
 
   return (
     <>
@@ -96,7 +109,7 @@ const Volunteer: React.FC<VolunteerProps> = ({ isUrdu }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'رضاکار بنیں' : 'Become a Volunteer'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'IOCA کے ساتھ مل کر پاکستان بھر میں کمیونٹیز کی خدمت کریں۔ آپ کا وقت اور مہارتیں زندگیاں بدل سکتی ہیں۔'
                 : 'Join IOCA and serve communities across Pakistan. Your time and skills can transform lives.'}
@@ -163,13 +176,13 @@ const Volunteer: React.FC<VolunteerProps> = ({ isUrdu }) => {
                 </h2>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField id="vol-name" name="name" label={isUrdu ? 'پورا نام' : 'Full Name'} required placeholder={isUrdu ? 'آپ کا نام' : 'Your name'} />
-                  <InputField id="vol-email" name="email" label={isUrdu ? 'ای میل' : 'Email'} type="email" required placeholder={isUrdu ? 'آپ کا ای میل' : 'Your email'} />
+                  <InputField id="vol-name" name="name" label={isUrdu ? 'پورا نام' : 'Full Name'} required placeholder={isUrdu ? 'آپ کا نام' : 'Your name'} value={formData.name} error={errors.name} isUrdu={isUrdu} onChange={handleChange} />
+                  <InputField id="vol-email" name="email" label={isUrdu ? 'ای میل' : 'Email'} type="email" required placeholder={isUrdu ? 'آپ کا ای میل' : 'Your email'} value={formData.email} error={errors.email} isUrdu={isUrdu} onChange={handleChange} />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField id="vol-phone" name="phone" label={isUrdu ? 'فون نمبر' : 'Phone'} type="tel" required placeholder={isUrdu ? 'فون نمبر' : 'Phone number'} />
-                  <InputField id="vol-city" name="city" label={isUrdu ? 'شہر' : 'City'} required placeholder={isUrdu ? 'آپ کا شہر' : 'Your city'} />
+                  <InputField id="vol-phone" name="phone" label={isUrdu ? 'فون نمبر' : 'Phone'} type="tel" required placeholder={isUrdu ? 'فون نمبر' : 'Phone number'} value={formData.phone} error={errors.phone} isUrdu={isUrdu} onChange={handleChange} />
+                  <InputField id="vol-city" name="city" label={isUrdu ? 'شہر' : 'City'} required placeholder={isUrdu ? 'آپ کا شہر' : 'Your city'} value={formData.city} error={errors.city} isUrdu={isUrdu} onChange={handleChange} />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">

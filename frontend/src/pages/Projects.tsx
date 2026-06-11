@@ -43,7 +43,7 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'ہمارے پروجیکٹس' : 'Our Projects'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'پاکستان بھر میں ہمارے فعال اور مکمل شدہ منصوبوں کا جائزہ لیں۔'
                 : 'Explore our active and completed initiatives transforming communities across Pakistan.'}

@@ -61,7 +61,7 @@ const Gallery: React.FC<GalleryProps> = ({ isUrdu }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'گیلری' : 'Gallery'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'ہمارے پروگراموں، تقریبات اور کمیونٹی سرگرمیوں کی تصاویر۔'
                 : 'Photos from our programs, events, and community activities across Pakistan.'}

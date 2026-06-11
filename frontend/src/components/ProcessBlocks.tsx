@@ -75,7 +75,7 @@ const ProcessBlocks: React.FC<ProcessBlocksProps> = ({ isUrdu }) => {
           <h2 className={`text-3xl md:text-5xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
             {isUrdu ? 'ہم کیسے کام کرتے ہیں' : 'How We Work'}
           </h2>
-          <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl mx-auto">
+          <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl mx-auto ${isUrdu ? 'font-urduBody' : ''}`}>
             {isUrdu ? 'شناخت سے اثر تک — ہمارا ثابت شدہ طریقہ کار' : 'From identification to impact — our proven methodology'}
           </p>
         </motion.div>

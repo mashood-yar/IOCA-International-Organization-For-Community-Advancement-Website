@@ -26,20 +26,25 @@ function ScrollToTop() {
 
 /** Simple error boundary */
 class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
+  { children: React.ReactNode, isUrdu: boolean },
   { hasError: boolean }
 > {
   state = { hasError: false };
   static getDerivedStateFromError() { return { hasError: true }; }
   render() {
     if (this.state.hasError) {
+      const { isUrdu } = this.props;
       return (
-        <div className="min-h-screen flex items-center justify-center text-center p-8">
+        <div className={`min-h-screen flex items-center justify-center text-center p-8 ${isUrdu ? 'font-urduBody rtl' : 'ltr'}`} dir={isUrdu ? 'rtl' : 'ltr'}>
           <div>
-            <h1 className="text-3xl font-bold text-brand-navy mb-4">Something went wrong</h1>
-            <p className="text-brand-navy/70 mb-6">Please refresh the page or try again later.</p>
+            <h1 className="text-3xl font-bold text-brand-navy mb-4">
+              {isUrdu ? 'کچھ غلط ہو گیا' : 'Something went wrong'}
+            </h1>
+            <p className="text-brand-navy/70 mb-6">
+              {isUrdu ? 'براہ کرم صفحہ ریفریش کریں یا بعد میں دوبارہ کوشش کریں۔' : 'Please refresh the page or try again later.'}
+            </p>
             <button onClick={() => window.location.reload()} className="bg-brand-gold text-brand-navy px-6 py-3 rounded-full font-semibold">
-              Refresh Page
+              {isUrdu ? 'صفحہ ریفریش کریں' : 'Refresh Page'}
             </button>
           </div>
         </div>
@@ -61,6 +66,10 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    document.documentElement.lang = isUrdu ? 'ur' : 'en';
+  }, [isUrdu]);
+
   const handleDonateClick = (campaignName: string | null = null) => {
     setSelectedCampaign(campaignName);
     setIsModalOpen(true);
@@ -72,7 +81,7 @@ function App() {
       <Navbar isUrdu={isUrdu} setIsUrdu={setIsUrdu} onDonateClick={() => handleDonateClick(null)} />
 
       <main id="main-content">
-        <ErrorBoundary>
+        <ErrorBoundary isUrdu={isUrdu}>
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home isUrdu={isUrdu} onDonateClick={handleDonateClick} />} />

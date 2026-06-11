@@ -176,7 +176,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'بانی اور ایگزیکٹو ڈائریکٹر',
     bioEn: 'A social entrepreneur with 15+ years in development sector leadership across South Asia.',
     bioUr: 'جنوبی ایشیا میں ترقیاتی شعبے میں 15 سال سے زیادہ قیادت کا تجربہ رکھنے والے سماجی کاروباری۔',
-    image: '/assets/team-1.webp',
+    image: '/assets/team-1.png',
   },
   {
     id: '2',
@@ -186,7 +186,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'ڈائریکٹر صحت پروگرامز',
     bioEn: 'MBBS, MPH from Aga Khan University. Led maternal health initiatives serving 50,000+ women.',
     bioUr: 'آغا خان یونیورسٹی سے MBBS، MPH۔ 50,000 سے زیادہ خواتین کو زچگی صحت کی خدمات فراہم کیں۔',
-    image: '/assets/team-2.webp',
+    image: '/assets/team-2.png',
   },
   {
     id: '3',
@@ -196,7 +196,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'سربراہ شعبہ تعلیم',
     bioEn: 'Former principal with a passion for curriculum development and teacher training in rural areas.',
     bioUr: 'سابق پرنسپل جو دیہی علاقوں میں نصاب کی ترقی اور اساتذہ کی تربیت کا شوق رکھتے ہیں۔',
-    image: '/assets/team-3.webp',
+    image: '/assets/team-3.png',
   },
   {
     id: '4',
@@ -206,7 +206,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'کمیونٹی آؤٹ ریچ مینیجر',
     bioEn: 'Grassroots organizer connecting IOCA\'s programs with the communities that need them most.',
     bioUr: 'نچلی سطح کی منتظم جو IOCA کے پروگراموں کو سب سے زیادہ ضرورت مند کمیونٹیز سے جوڑتی ہیں۔',
-    image: '/assets/team-4.webp',
+    image: '/assets/team-4.png',
   },
   {
     id: '5',
@@ -216,7 +216,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'ڈائریکٹر مالیات اور تعمیل',
     bioEn: 'Chartered Accountant ensuring every rupee is transparently tracked and maximally impactful.',
     bioUr: 'چارٹرڈ اکاؤنٹنٹ جو ہر روپے کی شفاف نگرانی اور زیادہ سے زیادہ اثر کو یقینی بناتے ہیں۔',
-    image: '/assets/team-5.webp',
+    image: '/assets/team-5.png',
   },
   {
     id: '6',
@@ -226,7 +226,7 @@ export const teamMembers: TeamMember[] = [
     positionUr: 'سربراہ نوجوان پروگرامز',
     bioEn: 'Digital skills trainer and youth advocate empowering the next generation of Pakistani leaders.',
     bioUr: 'ڈیجیٹل مہارت کی ٹرینر اور نوجوانوں کی حامی جو پاکستانی قائدین کی اگلی نسل کو بااختیار بنا رہی ہیں۔',
-    image: '/assets/team-6.webp',
+    image: '/assets/team-6.png',
   },
 ];
 

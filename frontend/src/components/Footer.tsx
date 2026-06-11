@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ isUrdu }) => {
             <div className="flex items-center justify-center md:justify-start mb-6">
               <img src="/assets/logos/vertical-main-logo-white.webp" alt="IOCA Logo" className="h-32 md:h-40 w-auto object-contain" />
             </div>
-            <p className="text-brand-white/70 text-lg max-w-sm leading-relaxed mb-6 mx-auto md:mx-0">
+            <p className={`text-brand-white/70 text-lg max-w-sm leading-relaxed mb-6 mx-auto md:mx-0 ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'آئی او سی اے (انٹرنیشنل آرگنائزیشن فار کمیونٹی ایڈوانسمنٹ) کے ساتھ مل کر ہم ایک روشن کل بنا سکتے ہیں۔'
                 : 'Together with IOCA (International Organization For Community Advancement), we can build a future full of possibilities.'}

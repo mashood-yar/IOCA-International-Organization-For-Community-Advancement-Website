@@ -65,7 +65,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ isUrdu, onDonateClick }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'تبدیلی لانے میں ہماری مدد کریں' : 'Help Us Create Change'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl mx-auto">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl mx-auto ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'آپ کا ہر عطیہ ایک زندگی بدل سکتا ہے۔ تعلیم، صحت اور ہنگامی امداد — آپ کا تعاون سب سے زیادہ ضرورت مند لوگوں تک پہنچتا ہے۔'
                 : 'Every donation has the power to change a life. From education to healthcare to emergency relief — your support reaches those who need it most.'}

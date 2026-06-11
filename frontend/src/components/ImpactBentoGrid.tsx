@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Droplets, GraduationCap, HeartPulse, CheckCircle2 } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
+import { toUrduNumerals } from '../utils/formatters';
 
 
 interface ImpactBentoGridProps {
@@ -8,7 +9,7 @@ interface ImpactBentoGridProps {
 }
 
 /** Animated counter that counts up to a target value */
-const CountUp = ({ target, suffix = '', isInView }: { target: number; suffix?: string; isInView: boolean }) => {
+const CountUp = ({ target, suffix = '', isInView, isUrdu }: { target: number; suffix?: string; isInView: boolean; isUrdu: boolean }) => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!isInView) return;
@@ -23,7 +24,8 @@ const CountUp = ({ target, suffix = '', isInView }: { target: number; suffix?: s
     };
     requestAnimationFrame(step);
   }, [isInView, target]);
-  return <>{count.toLocaleString()}{suffix}</>;
+  const displayNum = isUrdu ? toUrduNumerals(count.toLocaleString()) : count.toLocaleString();
+  return <>{displayNum}{suffix}</>;
 };
 
 const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
@@ -81,7 +83,7 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
           <h2 className={`text-3xl md:text-5xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
             {isUrdu ? 'ہمارا اثر — ارقام میں' : 'Our Impact — In Numbers'}
           </h2>
-          <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+          <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
             {isUrdu ? 'ہر عدد ایک کہانی بیان کرتا ہے — ایک زندگی بدلی، ایک کمیونٹی مضبوط ہوئی۔' : 'Every number tells a story — a life changed, a community strengthened.'}
           </p>
         </motion.div>
@@ -107,7 +109,7 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
                 <Icon className="w-8 h-8 md:w-10 md:h-10 relative z-10" />
                 <div className="relative z-10">
                   <p className="text-3xl md:text-5xl font-extrabold">
-                    {isInView ? <CountUp target={stat.value} suffix={stat.suffix} isInView={isInView} /> : '0'}
+                    {isInView ? <CountUp target={stat.value} suffix={stat.suffix} isInView={isInView} isUrdu={isUrdu} /> : '0'}
                   </p>
                   <p className={`text-sm md:text-lg mt-1 opacity-80 ${isUrdu ? 'font-urduBody' : ''}`}>
                     {isUrdu ? stat.labelUr : stat.labelEn}

@@ -36,7 +36,7 @@ const ImpactStories: React.FC<ImpactStoriesProps> = ({ isUrdu }) => {
             <h1 className={`text-4xl md:text-6xl font-extrabold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'اثرات کی کہانیاں' : 'Impact Stories'}
             </h1>
-            <p className="text-brand-navy/60 text-base md:text-lg max-w-2xl">
+            <p className={`text-brand-navy/60 text-base md:text-lg max-w-2xl ${isUrdu ? 'font-urduBody' : ''}`}>
               {isUrdu
                 ? 'حقیقی لوگ، حقیقی کمیونٹیز، حقیقی تبدیلی — یہ کہانیاں IOCA کے اثرات کی گواہی دیتی ہیں۔'
                 : 'Real people, real communities, real impact — these stories bear witness to the transformative power of IOCA\'s work.'}
@@ -102,9 +102,9 @@ const ImpactStories: React.FC<ImpactStoriesProps> = ({ isUrdu }) => {
                               ))}
                             </div>
 
-                            <blockquote className="border-l-4 border-brand-gold pl-6 py-2 mb-4">
+                            <blockquote className="border-s-4 border-brand-gold ps-6 py-2 mb-4">
                               <Quote className="w-5 h-5 text-brand-gold mb-2" aria-hidden="true" />
-                              <p className={`text-lg italic text-brand-navy ${isUrdu ? 'font-urduBody border-r-4 border-l-0 pr-6 pl-0' : 'font-serif'}`}>
+                              <p className={`text-lg italic text-brand-navy ${isUrdu ? 'font-urduBody' : 'font-serif'}`}>
                                 {isUrdu ? story.quoteUr : story.quoteEn}
                               </p>
                             </blockquote>
