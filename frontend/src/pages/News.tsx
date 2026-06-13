@@ -35,7 +35,8 @@ const News: React.FC<NewsProps> = ({ isUrdu }) => {
         .order('published_at', { ascending: false });
 
       if (error) {
-        setFetchError(isUrdu ? 'خبریں لوڈ کرنے میں ناکامی۔' : 'Failed to load news.');
+        console.warn('Failed to load news from Supabase, falling back to empty state.');
+        setPosts([]);
       } else {
         setPosts(data ?? []);
       }

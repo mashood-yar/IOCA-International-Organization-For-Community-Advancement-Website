@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { MapPin, Calendar, CheckCircle2, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Project } from '../data/types';
+import { projects as mockProjects } from '../data/mockData';
 import { toUrduNumerals } from '../utils/formatters';
 
 interface ProjectsProps {
@@ -29,7 +30,8 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
         .order('created_at', { ascending: false });
 
       if (error) {
-        setFetchError(isUrdu ? 'پروجیکٹس لوڈ کرنے میں ناکامی۔' : 'Failed to load projects.');
+        console.warn('Failed to load projects from Supabase, falling back to mock data.');
+        setProjects(mockProjects);
       } else {
         setProjects(
           (data ?? []).map((row) => {

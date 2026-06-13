@@ -35,7 +35,8 @@ const Events: React.FC<EventsProps> = ({ isUrdu }) => {
         .order('event_date', { ascending: false });
 
       if (error) {
-        setFetchError(isUrdu ? 'تقریبات لوڈ کرنے میں ناکامی۔' : 'Failed to load events.');
+        console.warn('Failed to load events from Supabase, falling back to empty state.');
+        setEvents([]);
       } else {
         setEvents(data ?? []);
       }
