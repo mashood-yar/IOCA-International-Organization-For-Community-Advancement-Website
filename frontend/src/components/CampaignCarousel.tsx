@@ -76,7 +76,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
             return (
               <motion.div
                 key={campaign.id}
-                className={`group min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col border-2 will-change-transform ${campaign.isUrgent ? 'border-brand-gold' : 'border-transparent'}`}
+                className={`group min-w-[85vw] md:min-w-[350px] lg:min-w-[400px] snap-center md:snap-start bg-brand-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col border-2 will-change-transform ${campaign.isUrgent ? 'border-brand-teal' : 'border-transparent'}`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
