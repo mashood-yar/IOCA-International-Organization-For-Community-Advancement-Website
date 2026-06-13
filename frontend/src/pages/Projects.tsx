@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, CheckCircle2, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MapPin, Calendar, CheckCircle2, Clock, Heart } from 'lucide-react';
 import { supabase, hasSupabaseConfig } from '../lib/supabase';
 import type { Project } from '../data/types';
 import { projects as mockProjects } from '../data/mockData';
@@ -204,6 +205,18 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
                       />
                     </div>
                   </div>
+
+                  {project.status === 'ongoing' && (
+                    <div className="mt-6">
+                      <Link
+                        to="/donate"
+                        className="w-full bg-brand-teal text-brand-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-md shadow-brand-teal/20"
+                      >
+                        <Heart className="w-4 h-4" />
+                        {isUrdu ? 'ابھی عطیہ کریں' : 'Donate Now'}
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
