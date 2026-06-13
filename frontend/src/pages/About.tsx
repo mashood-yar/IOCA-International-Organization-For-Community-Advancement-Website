@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Target, Eye, Users, ShieldCheck, Heart, Lightbulb, UsersRound, ArrowRight, Mail } from 'lucide-react';
 import { teamMembers } from '../data/mockData';
 
@@ -9,22 +9,7 @@ interface AboutProps {
   isUrdu: boolean;
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.5 },
-  }),
-};
-
 const About: React.FC<AboutProps> = ({ isUrdu }) => {
-  const valuesRef = React.useRef(null);
-  const teamRef = React.useRef(null);
-  const ctaRef = React.useRef(null);
-  const valuesInView = useInView(valuesRef, { once: true, margin: '-80px' });
-  const teamInView = useInView(teamRef, { once: true, margin: '-80px' });
-  const ctaInView = useInView(ctaRef, { once: true, margin: '-80px' });
 
   const values = [
     {
@@ -143,7 +128,7 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
         </section>
 
         {/* Our Values */}
-        <section ref={valuesRef} className="max-w-7xl mx-auto px-4 md:px-16 py-12">
+        <section className="max-w-7xl mx-auto px-4 md:px-16 py-12">
           <div className="text-center mb-12">
             <h2 className={`text-4xl md:text-5xl font-bold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
               {isUrdu ? 'ہماری اقدار' : 'Our Values'}
@@ -158,11 +143,11 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
             {values.map((val, i) => (
               <motion.div
                 key={val.titleEn}
-                className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-lg border border-brand-navy/5 text-center flex flex-col items-center"
-                custom={i}
-                initial="hidden"
-                animate={valuesInView ? 'visible' : 'hidden'}
-                variants={fadeUp}
+                className="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-lg border border-brand-navy/5 text-center flex flex-col items-center will-change-transform transform-gpu"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <div className="w-14 h-14 bg-brand-teal/10 rounded-full flex items-center justify-center mb-4">
                   {val.icon}
@@ -179,7 +164,7 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
         </section>
 
         {/* Our Team - wired to mockData */}
-        <section ref={teamRef} className="max-w-7xl mx-auto px-4 md:px-16 py-12">
+        <section className="max-w-7xl mx-auto px-4 md:px-16 py-12">
           <div className="text-center mb-16">
             <Users className="w-12 h-12 text-brand-teal mx-auto mb-4" />
             <h2 className={`text-4xl md:text-5xl font-bold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
@@ -195,11 +180,11 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
             {teamMembers.map((member, i) => (
               <motion.div
                 key={member.id}
-                className="bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-brand-navy/5 flex flex-col group"
-                custom={i}
-                initial="hidden"
-                animate={teamInView ? 'visible' : 'hidden'}
-                variants={fadeUp}
+                className="bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-brand-navy/5 flex flex-col group will-change-transform transform-gpu"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <div className="overflow-hidden">
                   <img
@@ -226,11 +211,12 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
         </section>
 
         {/* Bottom CTA Section */}
-        <section ref={ctaRef} className="max-w-7xl mx-auto px-4 md:px-16 py-16">
+        <section className="max-w-7xl mx-auto px-4 md:px-16 py-16">
           <motion.div
-            className="bg-brand-navy rounded-3xl p-8 md:p-16 text-center relative overflow-hidden"
+            className="bg-brand-navy rounded-3xl p-8 md:p-16 text-center relative overflow-hidden will-change-transform transform-gpu"
             initial={{ opacity: 0, y: 30 }}
-            animate={ctaInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6 }}
           >
             {/* Decorative jali pattern overlay */}
