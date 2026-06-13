@@ -135,7 +135,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
                       onClick={() => onDonateClick(isUrdu ? campaign.titleUr : campaign.titleEn)}
                       className={`w-full py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors ${
                         campaign.isUrgent
-                          ? 'bg-brand-gold text-brand-navy hover:opacity-90'
+                          ? 'bg-brand-teal text-brand-white hover:opacity-90'
                           : 'bg-brand-gray text-brand-navy border-2 border-brand-navy/10 hover:bg-brand-navy hover:text-brand-white'
                       }`}
                     >
