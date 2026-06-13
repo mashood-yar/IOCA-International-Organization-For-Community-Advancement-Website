@@ -47,7 +47,7 @@ const ProgramDetails: React.FC<ProgramDetailsProps> = ({ isUrdu }) => {
 
       {/* Hero */}
       <div className="relative h-[40vh] md:h-[60vh]">
-        <img src={program.image} alt={isUrdu ? program.titleUr : program.titleEn} className="w-full h-full object-cover" />
+        <img src={program.heroImage || program.image} alt={isUrdu ? program.titleUr : program.titleEn} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/60 z-10" aria-hidden="true" />
         <div className="absolute inset-0 z-20 flex flex-col justify-end px-6 md:px-16 pt-6 md:pt-16 pb-32 md:pb-40 max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

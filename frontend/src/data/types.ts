@@ -12,6 +12,7 @@ export interface Program {
   contentUr: string;
   icon: string;
   image: string;
+  heroImage?: string;
   stats: {
     beneficiaries: number;
     projects: number;
