@@ -23,7 +23,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
   const displayNum = (n: number) => isUrdu ? toUrduNumerals(n.toLocaleString()) : n.toLocaleString();
 
   return (
-    <section id="causes" ref={sectionRef} className="bg-brand-gray py-16 md:py-24 overflow-hidden">
+    <section id="causes" ref={sectionRef} className="py-10 md:py-24 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 md:px-16">
         {/* Header */}
         <motion.div
@@ -82,7 +82,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
               >
                 {/* Image */}
-                <div className="relative h-48 md:h-56 overflow-hidden">
+                <div className="relative h-40 md:h-48 overflow-hidden">
                   <img
                     src={campaign.image}
                     alt={isUrdu ? campaign.titleUr : campaign.titleEn}
@@ -97,11 +97,11 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-grow">
+                <div className="p-4 md:p-5 flex flex-col flex-grow">
                   <h3 className={`text-xl md:text-2xl font-bold text-brand-navy mb-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
                     {isUrdu ? campaign.titleUr : campaign.titleEn}
                   </h3>
-                  <p className="text-sm text-brand-navy/60 leading-relaxed mb-6 line-clamp-3">
+                  <p className="text-sm text-brand-navy/60 leading-relaxed mb-4">
                     {isUrdu ? campaign.descUr : campaign.descEn}
                   </p>
 
@@ -121,7 +121,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
                       />
                     </div>
 
-                    <div className="flex items-center justify-between text-sm mb-6">
+                    <div className="flex items-center justify-between text-sm mb-4">
                       <div>
                         <span className="font-bold text-brand-navy">{isUrdu ? `Rs ${displayNum(campaign.raised)}` : `Rs ${displayNum(campaign.raised)}`}</span>
                         <span className="text-brand-navy/50 ml-1">{isUrdu ? 'جمع ہوئے' : 'raised'}</span>
@@ -133,7 +133,7 @@ const CampaignCarousel: React.FC<CampaignCarouselProps> = ({ isUrdu, onDonateCli
 
                     <button
                       onClick={() => onDonateClick(isUrdu ? campaign.titleUr : campaign.titleEn)}
-                      className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors ${
+                      className={`w-full py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors ${
                         campaign.isUrgent
                           ? 'bg-brand-gold text-brand-navy hover:opacity-90'
                           : 'bg-brand-gray text-brand-navy border-2 border-brand-navy/10 hover:bg-brand-navy hover:text-brand-white'

@@ -210,13 +210,13 @@ const About: React.FC<AboutProps> = ({ isUrdu }) => {
                   />
                 </div>
                 <div className="p-4 md:p-6 text-center flex-grow flex flex-col justify-center">
-                  <h3 className={`text-sm md:text-xl font-bold text-brand-navy mb-1 line-clamp-1 ${isUrdu ? 'font-urduHeading' : ''}`}>
+                  <h3 className={`text-sm md:text-xl font-bold text-brand-navy mb-1 ${isUrdu ? 'font-urduHeading' : ''}`}>
                     {isUrdu ? member.nameUr : member.nameEn}
                   </h3>
                   <p className={`text-xs md:text-sm text-brand-teal font-medium mb-2 ${isUrdu ? 'font-urduBody' : ''}`}>
                     {isUrdu ? member.positionUr : member.positionEn}
                   </p>
-                  <p className={`text-xs text-brand-navy/60 line-clamp-2 hidden md:block ${isUrdu ? 'font-urduBody' : ''}`}>
+                  <p className={`text-xs text-brand-navy/60 hidden md:block ${isUrdu ? 'font-urduBody' : ''}`}>
                     {isUrdu ? member.bioUr : member.bioEn}
                   </p>
                 </div>

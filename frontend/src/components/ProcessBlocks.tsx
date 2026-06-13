@@ -60,14 +60,13 @@ const ProcessBlocks: React.FC<ProcessBlocksProps> = ({ isUrdu }) => {
   const orderedSteps = isUrdu ? [...steps].reverse() : steps;
 
   return (
-    <section id="process" ref={ref} className="relative py-16 md:py-24 bg-brand-gray overflow-hidden">
-      {/* Decorative curved edges */}
-      <div aria-hidden="true" className="absolute top-0 left-0 right-0 h-20 bg-brand-white" style={{ clipPath: 'ellipse(60% 100% at 50% 0%)' }} />
-      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-20 bg-brand-white" style={{ clipPath: 'ellipse(60% 100% at 50% 100%)' }} />
+    <section id="process" ref={ref} className="relative pt-4 pb-12 md:pt-10 md:pb-24 bg-brand-gray overflow-hidden">
+      {/* Decorative curved bottom edge */}
+      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-12 md:h-20 bg-brand-white" style={{ clipPath: 'ellipse(60% 100% at 50% 100%)' }} />
 
       <div className="max-w-7xl mx-auto px-4 md:px-16 relative z-10">
         <motion.div
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -87,7 +86,7 @@ const ProcessBlocks: React.FC<ProcessBlocksProps> = ({ isUrdu }) => {
           {orderedSteps.map((step, idx) => (
             <motion.li
               key={step.id}
-              className={`${widthClasses[step.id]} ${step.bg} rounded-[2rem] p-5 md:p-8 flex flex-col justify-between relative overflow-hidden hover:shadow-xl transition-shadow group min-h-[220px] md:min-h-[280px]`}
+              className={`${widthClasses[step.id]} ${step.bg} rounded-[2rem] p-4 md:p-6 flex flex-col justify-between relative overflow-hidden hover:shadow-xl transition-shadow group min-h-[160px] md:min-h-[240px]`}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: idx * 0.12 }}
@@ -111,11 +110,11 @@ const ProcessBlocks: React.FC<ProcessBlocksProps> = ({ isUrdu }) => {
                 <span className={`text-sm md:text-base font-bold opacity-60 group-hover:opacity-100 transition-colors ${isUrdu ? 'font-urduBody' : ''}`}>
                   {isUrdu ? `${toUrduNumerals(step.id)}.` : `${step.id}.`}
                 </span>
-                <h3 className={`text-lg md:text-2xl font-bold mt-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
+                <h3 className={`text-base md:text-2xl font-bold mt-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
                   {isUrdu ? step.titleUr : step.titleEn}
                 </h3>
               </div>
-              <p className={`text-sm md:text-base mt-3 opacity-80 line-clamp-4 md:line-clamp-none relative z-10 ${isUrdu ? 'font-urduBody' : ''}`}>
+              <p className={`text-xs md:text-base mt-2 opacity-80 relative z-10 ${isUrdu ? 'font-urduBody' : ''}`}>
                 {isUrdu ? step.descUr : step.descEn}
               </p>
             </motion.li>

@@ -12,8 +12,11 @@ const TestimonialGallery: React.FC<TestimonialGalleryProps> = ({ isUrdu }) => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="stories" ref={ref} className="bg-brand-gray py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 md:px-16">
+    <section id="stories" ref={ref} className="bg-brand-gray relative pt-14 pb-12 md:pt-32 md:pb-24 overflow-hidden">
+      {/* Decorative curved top edge */}
+      <div aria-hidden="true" className="absolute top-0 left-0 right-0 h-10 md:h-20 bg-brand-white" style={{ clipPath: 'ellipse(60% 100% at 50% 0%)' }} />
+
+      <div className="max-w-7xl mx-auto px-4 md:px-16 relative z-10">
         <motion.div
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}

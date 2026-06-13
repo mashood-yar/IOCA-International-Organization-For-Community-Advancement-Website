@@ -96,7 +96,7 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen bg-brand-gray text-brand-navy font-sans selection:bg-brand-gold selection:text-white pb-[72px] md:pb-0 ${isUrdu ? 'font-urduBody' : ''}`} dir={isUrdu ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-brand-gray text-brand-navy selection:bg-brand-gold selection:text-white pb-[72px] md:pb-0 ${isUrdu ? 'font-urduBody' : 'font-sans'}`} dir={isUrdu ? 'rtl' : 'ltr'}>
       <ScrollToTop />
       <Navbar isUrdu={isUrdu} setIsUrdu={setIsUrdu} onDonateClick={() => handleDonateClick(null)} />
 

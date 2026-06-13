@@ -150,7 +150,7 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
                 </div>
 
                 <div className="p-4 md:p-6">
-                  <h3 className={`text-sm md:text-lg font-bold text-brand-navy mb-2 line-clamp-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
+                  <h3 className={`text-sm md:text-lg font-bold text-brand-navy mb-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
                     {isUrdu ? project.titleUr : project.titleEn}
                   </h3>
 
@@ -164,7 +164,7 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
                     <span>{project.date}</span>
                   </div>
 
-                  <p className={`text-xs md:text-sm text-brand-navy/60 leading-relaxed line-clamp-2 md:line-clamp-3 mb-4 ${isUrdu ? 'font-urduBody' : ''}`}>
+                  <p className={`text-xs md:text-sm text-brand-navy/60 leading-relaxed mb-4 ${isUrdu ? 'font-urduBody' : ''}`}>
                     {isUrdu ? project.descUr : project.descEn}
                   </p>
 

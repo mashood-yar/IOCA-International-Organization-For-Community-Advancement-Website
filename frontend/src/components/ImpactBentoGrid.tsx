@@ -79,10 +79,16 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
   ];
 
   return (
-    <section id="impact" className="py-16 md:py-24" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 md:px-16">
+    <section id="impact" className="pt-8 pb-10 md:py-24 bg-brand-gray relative" ref={ref}>
+      {/* Top curve overlapping the Hero section */}
+      <div 
+        className="absolute left-0 right-0 h-10 md:h-16 bg-brand-gray pointer-events-none z-20" 
+        style={{ top: 0, transform: 'translateY(-99%)', clipPath: 'ellipse(60% 100% at 50% 100%)' }} 
+        aria-hidden="true" 
+      />
+      <div className="max-w-7xl mx-auto px-4 md:px-16 relative z-10">
         <motion.div
-          className="mb-12"
+          className="mb-8 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -95,13 +101,13 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 auto-rows-[200px] md:auto-rows-[250px] gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
               <motion.div
                 key={stat.id}
-                className={`${stat.colSpan} ${stat.bg} ${stat.textColor} rounded-[2rem] p-6 md:p-10 flex flex-col justify-between relative overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all`}
+                className={`${stat.colSpan} ${stat.bg} ${stat.textColor} rounded-[2rem] p-5 md:p-8 flex flex-col justify-between relative overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all min-h-[150px] md:min-h-[220px]`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
@@ -113,9 +119,9 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
                     style={{ backgroundImage: 'url("/assets/pattern-jali-accent.webp")', backgroundSize: '150px' }}
                   />
                 )}
-                <Icon className="w-8 h-8 md:w-10 md:h-10 relative z-10" />
+                <Icon className="w-8 h-8 md:w-10 md:h-10 relative z-10 mb-4 md:mb-0" />
                 <div className="relative z-10">
-                  <p className="text-3xl md:text-5xl font-extrabold">
+                  <p className="text-2xl md:text-4xl font-extrabold">
                     {isInView ? <CountUp target={stat.value} suffix={stat.suffix} isInView={isInView} isUrdu={isUrdu} /> : '0'}
                   </p>
                   <p className={`text-sm md:text-lg mt-1 opacity-80 ${isUrdu ? 'font-urduBody' : ''}`}>
@@ -128,7 +134,7 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
 
           {/* Full-width certification box */}
           <motion.div
-            className="col-span-2 bg-brand-navy text-brand-white rounded-[2rem] p-6 md:p-10 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg transition-all relative overflow-hidden"
+            className="col-span-2 bg-brand-navy text-brand-white rounded-[2rem] p-5 md:p-8 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg transition-all relative overflow-hidden min-h-[150px] md:min-h-[220px]"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -139,11 +145,11 @@ const ImpactBentoGrid: React.FC<ImpactBentoGridProps> = ({ isUrdu }) => {
               style={{ backgroundImage: 'url("/assets/pattern-jali-accent.webp")', backgroundSize: '200px' }}
             />
             <div className="relative z-10 flex flex-col justify-between h-full">
-              <p className={`text-3xl md:text-5xl font-extrabold text-brand-white ${isUrdu ? 'font-urduHeading' : ''}`}>
+              <p className={`text-2xl md:text-4xl font-extrabold text-brand-white ${isUrdu ? 'font-urduHeading' : ''}`}>
                 {isUrdu ? '٪100' : '100%'}
               </p>
-              <div className="mt-8 md:mt-0">
-                <p className={`text-sm md:text-lg text-brand-white/80 mb-4 ${isUrdu ? 'font-urduBody' : ''}`}>
+              <div className="mt-4 md:mt-0">
+                <p className={`text-sm md:text-lg text-brand-white/80 mb-3 ${isUrdu ? 'font-urduBody' : ''}`}>
                   {isUrdu ? 'آپ کا عطیہ مستحقین تک پہنچتا ہے' : 'of your donation reaches those in need'}
                 </p>
                 <div className="flex flex-wrap gap-2">

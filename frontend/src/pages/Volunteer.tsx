@@ -7,6 +7,39 @@ interface VolunteerProps {
   isUrdu: boolean;
 }
 
+interface InputFieldProps {
+  id: string;
+  name: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  placeholder: string;
+  value: string;
+  error?: string;
+  isUrdu: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+}
+
+const InputField: React.FC<InputFieldProps> = ({ id, name, label, type = 'text', required = false, placeholder, value, error, isUrdu, onChange }) => (
+  <div>
+    <label htmlFor={id} className={`block text-sm font-medium text-brand-navy mb-1.5 ${isUrdu ? 'font-urduBody' : ''}`}>
+      {label} {required && '*'}
+    </label>
+    <input
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`w-full px-4 py-3 rounded-xl border ${error ? 'border-red-400 bg-red-50' : 'border-brand-navy/10 bg-brand-gray'} focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal/20 transition-all text-sm`}
+    />
+    {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+  </div>
+);
+
+
 const Volunteer: React.FC<VolunteerProps> = ({ isUrdu }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -58,37 +91,7 @@ const Volunteer: React.FC<VolunteerProps> = ({ isUrdu }) => {
     { icon: Clock, titleEn: 'Flexible Hours', titleUr: 'لچکدار اوقات', descEn: 'Volunteer on your own schedule.', descUr: 'اپنے شیڈول کے مطابق رضاکارانہ خدمات۔' },
   ];
 
-interface InputFieldProps {
-  id: string;
-  name: string;
-  label: string;
-  type?: string;
-  required?: boolean;
-  placeholder: string;
-  value: string;
-  error?: string;
-  isUrdu: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-}
 
-const InputField: React.FC<InputFieldProps> = ({ id, name, label, type = 'text', required = false, placeholder, value, error, isUrdu, onChange }) => (
-  <div>
-    <label htmlFor={id} className={`block text-sm font-medium text-brand-navy mb-1.5 ${isUrdu ? 'font-urduBody' : ''}`}>
-      {label} {required && '*'}
-    </label>
-    <input
-      id={id}
-      name={name}
-      type={type}
-      required={required}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={`w-full px-4 py-3 rounded-xl border ${error ? 'border-red-400 bg-red-50' : 'border-brand-navy/10 bg-brand-gray'} focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal/20 transition-all text-sm`}
-    />
-    {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-  </div>
-);
 
   return (
     <>

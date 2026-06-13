@@ -103,7 +103,7 @@ const Gallery: React.FC<GalleryProps> = ({ isUrdu }) => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-end p-3">
-                  <p className="text-white text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 line-clamp-2">
+                  <p className="text-white text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {isUrdu ? item.captionUr : item.captionEn}
                   </p>
                 </div>

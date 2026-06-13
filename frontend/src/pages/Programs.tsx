@@ -59,15 +59,13 @@ const Programs: React.FC<ProgramsProps> = ({ isUrdu }) => {
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent group-hover:from-transparent transition-all duration-500" />
-                    <div className={`absolute -top-6 md:-top-10 ${isUrdu ? 'left-4 md:left-8' : 'right-4 md:right-8'} w-12 h-12 md:w-16 md:h-16 bg-brand-gold rounded-full flex items-center justify-center text-xl md:text-2xl shadow-lg scale-75 md:scale-100`}>
-                      {prog.icon}
-                    </div>
+
                   </div>
                   <div className="p-4 md:p-8">
                     <h2 className={`text-base md:text-2xl font-bold text-brand-navy mb-2 ${isUrdu ? 'font-urduHeading' : ''}`}>
                       {isUrdu ? prog.titleUr : prog.titleEn}
                     </h2>
-                    <p className={`text-xs md:text-base text-brand-navy/60 leading-relaxed line-clamp-3 md:line-clamp-none ${isUrdu ? 'font-urduBody' : ''}`}>
+                    <p className={`text-xs md:text-base text-brand-navy/60 leading-relaxed ${isUrdu ? 'font-urduBody' : ''}`}>
                       {isUrdu ? prog.descUr : prog.descEn}
                     </p>
                     <span className="inline-block mt-3 md:mt-4 text-brand-teal font-medium text-sm group-hover:translate-x-1 transition-transform">

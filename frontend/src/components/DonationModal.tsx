@@ -27,6 +27,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
   // Reset state when opened
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStep(1);
       setAmount(5000);
       setCustomAmount('');
@@ -45,6 +46,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
   // Update campaign if prop changes
   useEffect(() => {
     if (initialCampaign) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCampaign(initialCampaign);
     }
   }, [initialCampaign]);
@@ -109,7 +111,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
     }
     setStep(s => (s < 4 ? s + 1 : s) as 1 | 2 | 3 | 4);
   };
-  const handleBack = () => setStep(s => (s > 1 ? s - 1 : s) as any);
+  const handleBack = () => setStep(s => (s > 1 ? s - 1 : s) as 1 | 2 | 3 | 4);
 
   const displayNum = (num: number | string) => isUrdu ? toUrduNumerals(num) : num.toString();
 

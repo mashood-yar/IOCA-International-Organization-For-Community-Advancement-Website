@@ -29,6 +29,34 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: url('/fonts/urdu/NotoNastaliqUrdu-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: url('/fonts/urdu/NotoNastaliqUrdu-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: url('/fonts/urdu/NotoNastaliqUrdu-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: url('/fonts/urdu/NotoNastaliqUrdu-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 @theme {
   --color-brand-teal: #569AD0;
   --color-brand-navy: #1D2D49;
@@ -39,7 +67,7 @@
   --font-sans: 'Univers', 'Inter', system-ui, sans-serif;
   --font-serif: 'Aleo', Georgia, serif;
   --font-urduHeading: 'Noto Nastaliq Urdu', serif;
-  --font-urduBody: 'Noto Naskh Arabic', sans-serif;
+  --font-urduBody: 'Noto Nastaliq Urdu', serif;
 }
 
 @layer base {
@@ -49,6 +77,13 @@
   }
   body {
     @apply bg-brand-gray text-brand-navy font-sans antialiased;
+  }
+  
+  /* Fix Nastaliq overlapping and clipping globally */
+  .font-urduHeading, .font-urduBody {
+    line-height: 2.4 !important;
+    padding-top: 0.1em;
+    padding-bottom: 0.2em;
   }
 }
 
