@@ -123,7 +123,7 @@ function App() {
       </main>
 
       <Footer isUrdu={isUrdu} />
-      <DonationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialCampaign={selectedCampaign} isUrdu={isUrdu} />
+      <DonationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialCampaign={selectedCampaign || undefined} isUrdu={isUrdu} />
     </div>
   );
 }

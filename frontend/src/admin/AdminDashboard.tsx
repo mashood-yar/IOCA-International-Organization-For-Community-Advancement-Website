@@ -16,6 +16,9 @@ interface ContactSubmission {
 interface Donation {
   id: string;
   donor_name: string | null;
+  email: string | null;
+  phone: string | null;
+  payment_method: string | null;
   amount: number | null;
   message: string | null;
   created_at: string;
@@ -418,19 +421,26 @@ const AdminDashboard = () => {
                     <table className="w-full text-left text-sm">
                       <thead>
                         <tr className="border-b border-brand-navy/10 bg-brand-gray">
-                          <th className="px-4 py-3 font-bold text-brand-navy">Donor</th>
-                          <th className="px-4 py-3 font-bold text-brand-navy">Amount</th>
-                          <th className="px-4 py-3 font-bold text-brand-navy">Message</th>
                           <th className="px-4 py-3 font-bold text-brand-navy">Date</th>
+                          <th className="px-4 py-3 font-bold text-brand-navy">Donor</th>
+                          <th className="px-4 py-3 font-bold text-brand-navy">Contact</th>
+                          <th className="px-4 py-3 font-bold text-brand-navy">Method</th>
+                          <th className="px-4 py-3 font-bold text-brand-navy">Amount</th>
+                          <th className="px-4 py-3 font-bold text-brand-navy">Message / Cause</th>
                         </tr>
                       </thead>
                       <tbody>
                         {donations.map((donation) => (
                           <tr key={donation.id} className="border-b border-brand-navy/5 hover:bg-brand-gray/50">
-                            <td className="px-4 py-3 text-brand-navy">{donation.donor_name ?? 'Anonymous'}</td>
-                            <td className="px-4 py-3 text-brand-navy">{donation.amount != null ? `Rs ${donation.amount.toLocaleString()}` : '—'}</td>
-                            <td className="px-4 py-3 text-brand-navy max-w-xs truncate">{donation.message ?? '—'}</td>
                             <td className="px-4 py-3 text-brand-navy/70 whitespace-nowrap">{formatDate(donation.created_at)}</td>
+                            <td className="px-4 py-3 text-brand-navy">{donation.donor_name ?? 'Anonymous'}</td>
+                            <td className="px-4 py-3">
+                              <div className="text-sm text-brand-navy/70">{donation.email || '-'}</div>
+                              <div className="text-xs text-brand-navy/50">{donation.phone || '-'}</div>
+                            </td>
+                            <td className="px-4 py-3 text-brand-navy uppercase">{donation.payment_method || 'Unknown'}</td>
+                            <td className="px-4 py-3 text-brand-navy font-bold">Rs {donation.amount?.toLocaleString() || 0}</td>
+                            <td className="px-4 py-3 text-brand-navy max-w-xs truncate">{donation.message ?? '—'}</td>
                           </tr>
                         ))}
                       </tbody>

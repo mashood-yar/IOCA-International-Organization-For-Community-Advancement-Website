@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, ArrowRight, ArrowLeft, CheckCircle2, CreditCard, Building2, Smartphone } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, CheckCircle2, CreditCard, Building2, Lock, Loader2 } from 'lucide-react';
 import { toUrduNumerals } from '../utils/formatters';
 import { saveDonation } from '../lib/saveDonation';
 
 interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialCampaign: string | null;
   isUrdu: boolean;
+  initialCampaign?: string;
 }
 
-const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialCampaign, isUrdu }) => {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1); // 4 is success
+const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, isUrdu, initialCampaign }) => {
+  const [step, setStep] = useState<number>(1); // 1 to 5
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvc, setCardCvc] = useState('');
   const [amount, setAmount] = useState<number | null>(5000);
   const [customAmount, setCustomAmount] = useState<string>('');
-  const [frequency, setFrequency] = useState<'one-time' | 'monthly'>('one-time');
   const [fundType, setFundType] = useState<'zakat' | 'sadaqah' | 'general'>('general');
   const [campaign, setCampaign] = useState<string>(initialCampaign || 'General Fund');
   const [donorName, setDonorName] = useState('');
@@ -31,7 +34,6 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
       setStep(1);
       setAmount(5000);
       setCustomAmount('');
-      setFrequency('one-time');
       setFundType('general');
       setDonorName('');
       setDonorEmail('');
@@ -104,12 +106,30 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
   if (!isOpen) return null;
 
   const handleNext = async () => {
-    if (step === 3) {
+    if (step === 3 && paymentMethod === 'manual') {
       const finalAmount = amount || parseInt(customAmount) || 0;
-      const message = `${campaign} • ${fundType} • ${frequency}`;
-      await saveDonation(isAnon ? 'Anonymous' : donorName, finalAmount, message);
+      const message = `${campaign} • ${fundType}`;
+      await saveDonation(isAnon ? 'Anonymous' : donorName, donorEmail, donorPhone || 'N/A', paymentMethod, finalAmount, message);
+      setStep(4);
+    } else if (step === 3 && paymentMethod === 'online') {
+      setStep(4); // go to checkout
+    } else {
+      setStep(s => s + 1);
     }
-    setStep(s => (s < 4 ? s + 1 : s) as 1 | 2 | 3 | 4);
+  };
+
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    // Simulate payment processing delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    const finalAmount = amount || parseInt(customAmount) || 0;
+    const message = `${campaign} • ${fundType}`;
+    await saveDonation(isAnon ? 'Anonymous' : donorName, donorEmail, donorPhone || 'N/A', paymentMethod || 'online', finalAmount, message);
+    
+    setIsProcessing(false);
+    setStep(5); // Success step
   };
   const handleBack = () => setStep(s => (s > 1 ? s - 1 : s) as 1 | 2 | 3 | 4);
 
@@ -162,23 +182,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               
-              {/* Frequency */}
-              <div className="flex bg-brand-navy/5 p-1 rounded-xl" role="group" aria-label={isUrdu ? 'عطیہ کی قسم' : 'Donation frequency'}>
-                <button 
-                  onClick={() => setFrequency('one-time')}
-                  aria-pressed={frequency === 'one-time'}
-                  className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-brand-gold ${frequency === 'one-time' ? 'bg-white shadow-sm text-brand-navy' : 'text-brand-navy/60 hover:text-brand-navy'}`}
-                >
-                  {isUrdu ? 'ایک بار' : 'One Time'}
-                </button>
-                <button 
-                  onClick={() => setFrequency('monthly')}
-                  aria-pressed={frequency === 'monthly'}
-                  className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-brand-gold ${frequency === 'monthly' ? 'bg-white shadow-sm text-brand-navy' : 'text-brand-navy/60 hover:text-brand-navy'}`}
-                >
-                  {isUrdu ? 'ماہانہ' : 'Monthly'}
-                </button>
-              </div>
+              {/* Frequency removed - implicitly one-time */}
 
               {/* Amounts */}
               <div>
@@ -263,7 +267,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
                   <span className="font-bold text-lg">Rs {displayNum((amount || customAmount || 0).toLocaleString())}</span>
                 </p>
                 <p className="text-xs text-brand-navy/70 mt-1 font-medium">
-                  {campaign} • {fundType.charAt(0).toUpperCase() + fundType.slice(1)} • {frequency}
+                  {campaign} • {fundType.charAt(0).toUpperCase() + fundType.slice(1)}
                 </p>
               </div>
 
@@ -299,48 +303,141 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
               </label>
               
               <div className="space-y-3" role="group" aria-labelledby="payment-label">
-                <button onClick={() => setPaymentMethod('card')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'card' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
+                <button onClick={() => setPaymentMethod('online')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'online' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-brand-navy/5 rounded-full flex items-center justify-center text-brand-navy" aria-hidden="true">
                       <CreditCard className="w-5 h-5" />
                     </div>
-                    <span className="font-bold text-brand-navy">{isUrdu ? 'کریڈٹ / ڈیبٹ کارڈ' : 'Credit / Debit Card'}</span>
+                    <span className="font-bold text-brand-navy">{isUrdu ? 'آن لائن ادائیگی (کارڈ)' : 'Online Payment (Credit / Debit Card)'}</span>
                   </div>
                 </button>
 
-                <button onClick={() => setPaymentMethod('easypaisa')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'easypaisa' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#3eb149]/10 rounded-full flex items-center justify-center text-[#3eb149]" aria-hidden="true">
-                      <Smartphone className="w-5 h-5" />
-                    </div>
-                    <span className="font-bold text-brand-navy">EasyPaisa</span>
-                  </div>
-                </button>
-
-                <button onClick={() => setPaymentMethod('jazzcash')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'jazzcash' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#f7931e]/10 rounded-full flex items-center justify-center text-[#f7931e]" aria-hidden="true">
-                      <Smartphone className="w-5 h-5" />
-                    </div>
-                    <span className="font-bold text-brand-navy">JazzCash</span>
-                  </div>
-                </button>
-                
-                <button onClick={() => setPaymentMethod('bank')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'bank' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
+                <button onClick={() => setPaymentMethod('manual')} className={`w-full flex items-center justify-between p-4 border-2 rounded-xl transition-all text-left focus:outline-none focus:ring-2 focus:ring-brand-gold ${paymentMethod === 'manual' ? 'border-brand-gold bg-brand-gold/5' : 'border-brand-navy/10 hover:border-brand-gold hover:bg-brand-gold/5'}`}>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-brand-navy/5 rounded-full flex items-center justify-center text-brand-navy" aria-hidden="true">
                       <Building2 className="w-5 h-5" />
                     </div>
-                    <span className="font-bold text-brand-navy">{isUrdu ? 'بینک ٹرانسفر' : 'Direct Bank Transfer'}</span>
+                    <span className="font-bold text-brand-navy">{isUrdu ? 'بینک ٹرانسفر / موبائل والیٹ' : 'Manual Transfer (Bank / Mobile Account)'}</span>
                   </div>
                 </button>
               </div>
             </div>
           )}
 
-          {/* STEP 4: SUCCESS */}
+          {/* STEP 4: CHECKOUT OR MANUAL DETAILS */}
           {step === 4 && (
-            <div className="py-12 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
+            <div className="py-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {paymentMethod === 'online' ? (
+                <form onSubmit={handleCheckoutSubmit} className="space-y-6">
+                  <div className="text-center mb-6">
+                    <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Lock className="w-8 h-8 text-brand-gold" />
+                    </div>
+                    <h3 className={`text-2xl font-black text-brand-navy ${isUrdu ? 'font-urduHeading' : ''}`}>
+                      {isUrdu ? 'محفوظ آن لائن ادائیگی' : 'Secure Online Checkout'}
+                    </h3>
+                    <p className="text-brand-navy/60 text-sm mt-1">
+                      {isUrdu ? 'اپنے کارڈ کی تفصیلات درج کریں' : 'Enter your card details to complete the donation'}
+                    </p>
+                  </div>
+
+                  {/* Order Summary */}
+                  <div className="bg-brand-gray/50 rounded-xl p-4 flex justify-between items-center border border-brand-navy/5">
+                    <span className="font-bold text-brand-navy/70">{isUrdu ? 'عطیہ کی رقم:' : 'Donation Amount:'}</span>
+                    <span className="text-2xl font-black text-brand-gold">Rs {(amount || customAmount || 0).toLocaleString()}</span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-bold text-brand-navy mb-1.5">Card Number</label>
+                      <div className="relative">
+                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-navy/40" />
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="0000 0000 0000 0000" 
+                          maxLength={19}
+                          value={cardNumber}
+                          onChange={e => setCardNumber(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all font-mono"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-bold text-brand-navy mb-1.5">Expiry Date</label>
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="MM/YY" 
+                          maxLength={5}
+                          value={cardExpiry}
+                          onChange={e => setCardExpiry(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-brand-navy mb-1.5">CVC</label>
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="123" 
+                          maxLength={4}
+                          value={cardCvc}
+                          onChange={e => setCardCvc(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-brand-navy/20 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all font-mono"
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-2">
+                      <p className="text-xs text-brand-navy/50 flex items-center gap-1.5 justify-center">
+                        <Lock className="w-3 h-3" />
+                        Payments are securely processed via 256-bit encryption
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                <div className="w-full text-left">
+                  <h3 className={`text-2xl font-black text-brand-navy mb-4 text-center ${isUrdu ? 'font-urduHeading' : ''}`}>
+                    {isUrdu ? 'دستی ٹرانسفر کی تفصیلات' : 'Manual Transfer Details'}
+                  </h3>
+                  <div className="bg-brand-gold/10 p-4 rounded-xl border border-brand-gold/20 mb-6">
+                    <p className={`text-brand-navy/80 font-medium ${isUrdu ? 'text-right' : ''}`}>
+                      {isUrdu 
+                        ? 'رقم منتقل کرنے کے بعد، براہ کرم اپنے ای میل یا موبائل نمبر کے ساتھ ادائیگی کا اسکرین شاٹ ہمارے واٹس ایپ پر بھیجیں تاکہ ہم آپ کو رسید بھیج سکیں۔' 
+                        : 'After transferring the amount, please send the payment screenshot along with your email/mobile number to our WhatsApp so we can share your automated receipt.'}
+                    </p>
+                    <p className="mt-3 text-center font-black text-xl text-brand-navy">
+                      WhatsApp: <span className="text-brand-gold">+923200236963</span>
+                    </p>
+                  </div>
+                  <div className="bg-brand-navy/5 p-4 rounded-xl space-y-4">
+                    <div>
+                      <p className="text-xs font-bold text-brand-navy/50 uppercase">EasyPaisa</p>
+                      <p className="font-bold text-brand-navy">0300 0000000 <span className="font-normal text-sm text-brand-navy/70">(Dummy Name)</span></p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-brand-navy/50 uppercase">JazzCash</p>
+                      <p className="font-bold text-brand-navy">0300 0000000 <span className="font-normal text-sm text-brand-navy/70">(Dummy Name)</span></p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-brand-navy/50 uppercase">SadaPay</p>
+                      <p className="font-bold text-brand-navy">0300 0000000 <span className="font-normal text-sm text-brand-navy/70">(Dummy Name)</span></p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-brand-navy/50 uppercase">NayaPay</p>
+                      <p className="font-bold text-brand-navy">0300 0000000 <span className="font-normal text-sm text-brand-navy/70">(Dummy Name)</span></p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* STEP 5: SUCCESS (ONLINE) */}
+          {step === 5 && (
+            <div className="py-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
               <div className="w-20 h-20 bg-brand-navy/10 rounded-full flex items-center justify-center mb-6" aria-hidden="true">
                 <CheckCircle2 className="w-10 h-10 text-brand-navy" />
               </div>
@@ -358,27 +455,51 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, initialC
         </div>
 
         {/* Footer Actions */}
-        {step < 4 ? (
+        {(step < 4 || (step === 4 && paymentMethod === 'online')) && (
           <div className="p-6 border-t border-brand-navy/10 bg-brand-gray/50 flex items-center gap-4 shrink-0">
             {step > 1 && (
               <button 
                 onClick={handleBack}
-                className="p-4 rounded-xl border border-brand-navy/20 text-brand-navy hover:bg-brand-navy/5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                disabled={isProcessing}
+                className="p-4 rounded-xl border border-brand-navy/20 text-brand-navy hover:bg-brand-navy/5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-gold disabled:opacity-50"
                 aria-label={isUrdu ? 'پچھلا قدم' : 'Previous step'}
               >
                 <ArrowLeft className={`w-5 h-5 ${isUrdu ? 'rotate-180' : ''}`} />
               </button>
             )}
-            <button 
-              onClick={handleNext}
-              disabled={(step === 1 && !amount && !customAmount) || (step === 2 && (!donorName || !donorEmail)) || (step === 3 && !paymentMethod)}
-              className="flex-1 bg-brand-gold text-brand-navy py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-gold/20 focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
-            >
-              {step === 3 ? (isUrdu ? 'ادائیگی مکمل کریں' : 'Complete Donation') : (isUrdu ? 'آگے بڑھیں' : 'Continue')}
-              {step < 3 && <ArrowRight className={`w-5 h-5 ${isUrdu ? 'rotate-180' : ''}`} />}
-            </button>
+            
+            {step === 4 && paymentMethod === 'online' ? (
+              <button 
+                onClick={handleCheckoutSubmit}
+                disabled={!cardNumber || !cardExpiry || !cardCvc || isProcessing}
+                className="flex-1 bg-brand-gold text-brand-navy py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-gold/20"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-5 h-5" />
+                    Pay Rs {(amount || customAmount || 0).toLocaleString()}
+                  </>
+                )}
+              </button>
+            ) : (
+              <button 
+                onClick={handleNext}
+                disabled={(step === 1 && !amount && !customAmount) || (step === 2 && (!donorName || !donorEmail)) || (step === 3 && !paymentMethod)}
+                className="flex-1 bg-brand-gold text-brand-navy py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-gold/20"
+              >
+                {step === 3 && paymentMethod === 'manual' ? (isUrdu ? 'ادائیگی مکمل کریں' : 'Complete Donation') : (isUrdu ? 'آگے بڑھیں' : 'Continue')}
+                {step < 3 && <ArrowRight className={`w-5 h-5 ${isUrdu ? 'rotate-180' : ''}`} />}
+              </button>
+            )}
           </div>
-        ) : (
+        )}
+        
+        {((step === 4 && paymentMethod === 'manual') || step === 5) && (
           <div className="p-6 border-t border-brand-navy/10 bg-brand-gray/50 shrink-0">
             <button 
               onClick={onClose}

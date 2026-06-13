@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { Heart, CreditCard, Building2, Repeat, CheckCircle2, Shield, BookOpen } from 'lucide-react';
+import { Heart, CreditCard, Building2, CheckCircle2, Shield, BookOpen } from 'lucide-react';
 
 interface DonatePageProps {
   isUrdu: boolean;
@@ -11,7 +11,7 @@ interface DonatePageProps {
 const DonatePage: React.FC<DonatePageProps> = ({ isUrdu, onDonateClick }) => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(5000);
   const [customAmount, setCustomAmount] = useState('');
-  const [isRecurring, setIsRecurring] = useState(false);
+
 
   const presetAmounts = [1000, 2500, 5000, 10000, 25000, 50000];
 
@@ -80,29 +80,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ isUrdu, onDonateClick }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              {/* Recurring Toggle */}
-              <div className="flex items-center justify-between mb-8 p-4 bg-brand-gray rounded-xl">
-                <div className="flex items-center gap-3">
-                  <Repeat className="w-5 h-5 text-brand-teal" />
-                  <div>
-                    <p className={`font-bold text-brand-navy text-sm ${isUrdu ? 'font-urduBody' : ''}`}>
-                      {isUrdu ? 'ماہانہ عطیہ' : 'Monthly Giving'}
-                    </p>
-                    <p className={`text-xs text-brand-navy/50 ${isUrdu ? 'font-urduBody' : ''}`}>
-                      {isUrdu ? 'باقاعدہ عطیہ سے زیادہ اثر ہوتا ہے' : 'Regular giving creates lasting impact'}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsRecurring(!isRecurring)}
-                  className={`w-12 h-7 rounded-full transition-colors relative ${isRecurring ? 'bg-brand-teal' : 'bg-brand-navy/20'}`}
-                  role="switch"
-                  aria-checked={isRecurring}
-                  aria-label={isUrdu ? 'ماہانہ عطیہ' : 'Monthly giving toggle'}
-                >
-                  <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-transform ${isRecurring ? 'translate-x-5' : 'translate-x-0.5'}`} />
-                </button>
-              </div>
+
 
               {/* Amount Presets */}
               <h3 className={`font-bold text-brand-navy mb-4 ${isUrdu ? 'font-urduHeading' : ''}`}>
@@ -149,9 +127,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ isUrdu, onDonateClick }) => {
                 className="w-full bg-brand-gold text-brand-navy font-bold py-4 rounded-xl text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-3 shadow-lg shadow-brand-gold/20"
               >
                 <Heart className="w-5 h-5" />
-                {isRecurring
-                  ? (isUrdu ? 'ماہانہ عطیہ شروع کریں' : 'Start Monthly Donation')
-                  : (isUrdu ? 'ابھی عطیہ کریں' : 'Donate Now')}
+                {isUrdu ? 'ابھی عطیہ کریں' : 'Donate Now'}
               </button>
 
               {/* Payment Methods */}
