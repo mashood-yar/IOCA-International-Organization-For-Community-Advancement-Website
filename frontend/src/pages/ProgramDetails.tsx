@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Users, FolderOpen, UserCheck } from 'lucide-react';
 import { programs } from '../data/mockData';
 import { formatCompact } from '../utils/formatters';
-import type { Program } from '../data/types';
+import type { Program } from '../types';
 
 interface ProgramDetailsProps {
   isUrdu: boolean;

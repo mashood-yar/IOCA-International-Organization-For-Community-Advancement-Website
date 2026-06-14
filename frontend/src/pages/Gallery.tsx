@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { galleryItems } from '../data/mockData';
-import type { GalleryItem } from '../data/types';
+import type { GalleryItem } from '../types';
 
 interface GalleryProps {
   isUrdu: boolean;

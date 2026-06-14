@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Calendar } from 'lucide-react';
-import { supabase, hasSupabaseConfig } from '../lib/supabase';
+import { getNews } from '../services/api';
 
 interface NewsItem {
   id: string;
@@ -26,29 +26,11 @@ const News: React.FC<NewsProps> = ({ isUrdu }) => {
     const fetchNews = async () => {
       setLoading(true);
       setFetchError('');
-
-      if (!hasSupabaseConfig) {
-        console.warn('No Supabase configuration found, falling back to empty state instantly.');
-        setPosts([]);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const { data, error } = await supabase
-          .from('news')
-          .select('*')
-          .order('published_at', { ascending: false });
-
-        if (error) {
-          console.warn('Failed to load news from Supabase, falling back to empty state.');
-          setPosts([]);
-        } else {
-          setPosts(data ?? []);
-        }
+        const data = await getNews();
+        setPosts(data);
       } catch (err) {
-        console.warn('Exception during Supabase fetch, falling back to empty state.', err);
-        setPosts([]);
+        setFetchError('Failed to load news');
       } finally {
         setLoading(false);
       }

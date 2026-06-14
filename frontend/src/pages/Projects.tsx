@@ -3,9 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Calendar, CheckCircle2, Clock, Heart } from 'lucide-react';
-import { supabase, hasSupabaseConfig } from '../lib/supabase';
-import type { Project } from '../data/types';
-import { projects as mockProjects } from '../data/mockData';
+import { getProjects } from '../services/api';
+import type { Project } from '../types';
 import { toUrduNumerals } from '../utils/formatters';
 
 interface ProjectsProps {
@@ -19,51 +18,14 @@ const Projects: React.FC<ProjectsProps> = ({ isUrdu }) => {
   const [fetchError, setFetchError] = useState('');
 
   useEffect(() => {
-    const fetchProjects = async () => {
+      const fetchProjects = async () => {
       setLoading(true);
       setFetchError('');
-
-      if (!hasSupabaseConfig) {
-        console.warn('No Supabase configuration found, falling back to mock data instantly.');
-        setProjects(mockProjects);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.warn('Failed to load projects from Supabase, falling back to mock data.');
-          setProjects(mockProjects);
-        } else {
-          setProjects(
-            (data ?? []).map((row) => {
-              const status = row.status === 'completed' ? 'completed' : 'ongoing';
-              return {
-                id: row.id,
-                titleEn: row.title,
-                titleUr: row.title,
-                descEn: row.description,
-                descUr: row.description,
-                locationEn: '',
-                locationUr: '',
-                status,
-                statusEn: status === 'completed' ? 'Completed' : 'Ongoing',
-                statusUr: status === 'completed' ? 'مکمل' : 'جاری',
-                date: new Date(row.created_at).toLocaleDateString(),
-                image: row.image_url ?? '/assets/hero-community.webp',
-                progress: status === 'completed' ? 100 : 50,
-              };
-            })
-          );
-        }
+        const data = await getProjects();
+        setProjects(data);
       } catch (err) {
-        console.warn('Exception during Supabase fetch, falling back to mock data.', err);
-        setProjects(mockProjects);
+        setFetchError('Failed to load projects');
       } finally {
         setLoading(false);
       }

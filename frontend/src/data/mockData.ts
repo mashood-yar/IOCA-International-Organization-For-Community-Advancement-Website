@@ -12,7 +12,7 @@ import type {
   Testimonial,
   GalleryItem,
   ImpactStory,
-} from './types';
+} from '../types';
 
 // ────────────────────────────────────────────────────────────
 // PROGRAMS
