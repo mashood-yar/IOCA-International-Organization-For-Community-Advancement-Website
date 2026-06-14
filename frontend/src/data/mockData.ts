@@ -451,3 +451,4 @@ export const impactStories: ImpactStory[] = [
     date: '2023',
   },
 ];
+
